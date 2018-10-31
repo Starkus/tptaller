@@ -57,3 +57,22 @@ _hayRepetidos (x:xs) = _pertenece x xs || _hayRepetidos xs
 
 caminoSinRepetidos :: Tablero -> Camino -> Bool
 caminoSinRepetidos tablero camino = _hayRepetidos (numerosDeCamino tablero camino) == False
+
+
+-- Calcula el Maximo del Tablero
+-- _maxLista busca el maximo de una lista
+_maxLista::[Integer]->Integer
+_maxLista x | length x == 1 = head x
+            | length x > 1 && head x >= _maxLista (tail x) = head x
+            | otherwise = _maxLista (tail x)
+
+-- _maxFilas crea una lista de valores maximos de un Tablero
+_maxFilas::Tablero->[Integer]
+_maxFilas tab | length tab == 1 = [_maxLista (head tab)]
+              | otherwise = _maxLista (head tab) : _maxFilas (tail tab)
+
+-- maximo devuelve el valor maximo del Tablero
+maximo::Tablero->Integer
+maximo tab | length tab == 1 = _maxLista (head tab)
+           | otherwise = _maxLista (_maxFilas tab)
+
