@@ -21,6 +21,10 @@ camino2 = [(2,1),(2,2),(2,3),(3,3),(4,3)]
 camino3 :: Camino 
 camino3 = [(1,2),(2,2),(3,2)]
 
+-- Camino4 creado con fines de testing
+camino4 :: Camino
+camino4 = [(2,1),(2,2),(3,2),(4,2),(4,3)]
+
 -- Dado la cantidad filas de un tablero.
 cantidadFilas :: Tablero -> Integer
 cantidadFilas t = fromIntegral (length t)
@@ -59,18 +63,24 @@ caminoSinRepetidos tablero camino = _hayRepetidos (numerosDeCamino tablero camin
 
 -- Calcula el Maximo del Tablero
 -- _maxLista busca el maximo de una lista
-_maxLista::[Integer]->Integer
+_maxLista:: [Integer] -> Integer
 _maxLista x | length x == 1 = head x
             | length x > 1 && head x >= _maxLista (tail x) = head x
             | otherwise = _maxLista (tail x)
 
 -- _maxFilas crea una lista de valores maximos de un Tablero
-_maxFilas::Tablero->[Integer]
+_maxFilas:: Tablero -> [Integer]
 _maxFilas tab | length tab == 1 = [_maxLista (head tab)]
               | otherwise = _maxLista (head tab) : _maxFilas (tail tab)
 
 -- maximo devuelve el valor maximo del Tablero
-maximo::Tablero->Integer
+maximo:: Tablero -> Integer
 maximo tab | length tab == 1 = _maxLista (head tab)
            | otherwise = _maxLista (_maxFilas tab)
 
+
+caminoDeFibonacci:: Tablero -> Camino -> Bool
+caminoDeFibonacci tab cam | length num == 1 = True
+                          | length num > 1 && head (reverse num) == (head (tail (reverse num))) + head (tail ( tail (reverse num))) = True
+                          | otherwise = False  
+                            where num = numerosDeCamino tab cam
