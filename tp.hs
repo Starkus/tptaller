@@ -42,6 +42,18 @@ valorY (c:cs) n = valorY cs (n-1)
 posValida :: Tablero -> Posicion -> Bool
 posValida t (x,y) = x >= 1 && x <= (cantidadFilas t) && y >= 1 && y <= (cantidadColumnas t) 
 
+-- Devuelve una lista con los valores del tablero en el camino
 numerosDeCamino :: Tablero -> Camino -> [Integer]
 numerosDeCamino tab [] = []
 numerosDeCamino tab (x:xs) = valor tab x : numerosDeCamino tab xs
+
+_pertenece :: Integer -> [Integer] -> Bool
+_pertenece n [] = False
+_pertenece n (x:xs) = n == x || _pertenece n xs
+
+_hayRepetidos :: [Integer] -> Bool
+_hayRepetidos [] = False
+_hayRepetidos (x:xs) = _pertenece x xs || _hayRepetidos xs
+
+caminoSinRepetidos :: Tablero -> Camino -> Bool
+caminoSinRepetidos tablero camino = _hayRepetidos (numerosDeCamino tablero camino) == False
