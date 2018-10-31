@@ -47,13 +47,11 @@ numerosDeCamino :: Tablero -> Camino -> [Integer]
 numerosDeCamino tab [] = []
 numerosDeCamino tab (x:xs) = valor tab x : numerosDeCamino tab xs
 
-_pertenece :: Integer -> [Integer] -> Bool
-_pertenece n [] = False
-_pertenece n (x:xs) = n == x || _pertenece n xs
-
+-- Devuelve True si al menos un elemento esta 2 o mas veces
 _hayRepetidos :: [Integer] -> Bool
 _hayRepetidos [] = False
-_hayRepetidos (x:xs) = _pertenece x xs || _hayRepetidos xs
+_hayRepetidos (x:xs) = elem x xs || _hayRepetidos xs
 
+-- Determina si los valores de un camino contiene repetidos
 caminoSinRepetidos :: Tablero -> Camino -> Bool
 caminoSinRepetidos tablero camino = _hayRepetidos (numerosDeCamino tablero camino) == False
