@@ -79,8 +79,40 @@ maximo tab | length tab == 1 = _maxLista (head tab)
            | otherwise = _maxLista (_maxFilas tab)
 
 
+-- masRepetido
+-- Primero cambio los valores de una fila a tuplas
+
+_valoresTableroRepetidos:: Tablero -> [Integer]
+_valoresTableroRepetidos tab | length tab == 1 = head tab
+                             | otherwise = head tab ++ _valoresTableroRepetidos (tail tab)
+                     
+_eliminarRepetidos:: [Integer] -> [Integer]
+_eliminarRepetidos [] = []
+_eliminarRepetidos (x:xs) | elem x xs = _eliminarRepetidos (xs)
+                          | otherwise = [x] ++ _eliminarRepetidos (xs)
+
+_aparicionesK:: [Integer] -> Integer -> Integer
+_aparicionesK l k | length l == 1 && head l == k = 1
+                  | length l == 1 && head l /= k = 0
+                  | length l >= 1 && head l == k = 1 + _aparicionesK (tail l) k
+                  | otherwise = _aparicionesK (tail l) k
+
+_cantAparTupla:: [Integer] -> Integer -> (Integer,Integer)
+_cantAparTupla l k = (k, _aparicionesK l k)
+
+_cantApar:: [Integer] -> [Integer] -> [(Integer,Integer)]
+_cantApar l apar | length apar == 1 = apariciones
+                 | otherwise = apariciones ++ _cantApar l (tail apar)
+                  where apariciones = [(head apar, snd (_cantAparTupla l (head apar)))]
+
+_tuplasFinales:: Tablero -> [(Integer,Integer)]
+_tuplasFinales tab = _cantApar (_valoresTableroRepetidos tab) (_eliminarRepetidos (_valoresTableroRepetidos tab))
+
+-- CaminoFibonacci, verifica si un camino en un tablero cumple con la condicion de que
+-- si un numero (del camino) es suma de los 2 anteriores
 caminoDeFibonacci:: Tablero -> Camino -> Bool
-caminoDeFibonacci tab cam | length num == 1 = True
-                          | length num > 1 && head (reverse num) == (head (tail (reverse num))) + head (tail ( tail (reverse num))) = True
+caminoDeFibonacci tab cam | length num == 1 = True  -- El largo del camino tiene que ser por lo menos 2,
+                          | length num == 2 = True  -- ya que se ven los 2 valores anteriores
+                          | length num > 2 && head (reverse num) == (head (tail (reverse num))) + head (tail ( tail (reverse num))) = True
                           | otherwise = False  
                             where num = numerosDeCamino tab cam
