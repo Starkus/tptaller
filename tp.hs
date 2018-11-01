@@ -80,17 +80,20 @@ maximo tab | length tab == 1 = _maxLista (head tab)
 
 
 -- masRepetido
--- Primero cambio los valores de una fila a tuplas
-
+-- Esta funcion concatena todas las listas del tablero
 _valoresTableroRepetidos:: Tablero -> [Integer]
 _valoresTableroRepetidos tab | length tab == 1 = head tab
                              | otherwise = head tab ++ _valoresTableroRepetidos (tail tab)
-                     
+
+
+-- Esta funcion elimina los repetidos de una funcion (usado para la lista
+-- generada por la funcion anterior)
 _eliminarRepetidos:: [Integer] -> [Integer]
 _eliminarRepetidos [] = []
 _eliminarRepetidos (x:xs) | elem x xs = _eliminarRepetidos (xs)
                           | otherwise = [x] ++ _eliminarRepetidos (xs)
 
+                          -- Esta funcion cuenta las apariciones de un numero k en una lista l
 _aparicionesK:: [Integer] -> Integer -> Integer
 _aparicionesK l k | length l == 1 && head l == k = 1
                   | length l == 1 && head l /= k = 0
@@ -100,13 +103,27 @@ _aparicionesK l k | length l == 1 && head l == k = 1
 _cantAparTupla:: [Integer] -> Integer -> (Integer,Integer)
 _cantAparTupla l k = (k, _aparicionesK l k)
 
+-- Cuenta la cantidad de apariciones de una tupla
 _cantApar:: [Integer] -> [Integer] -> [(Integer,Integer)]
 _cantApar l apar | length apar == 1 = apariciones
                  | otherwise = apariciones ++ _cantApar l (tail apar)
                   where apariciones = [(head apar, snd (_cantAparTupla l (head apar)))]
 
+-- Esta funcion genera una lista de tuplas con todos los 
+-- numeros del tablero y la cantidad de apariciones
+-- y devuelve una tupla de forma : (Nro en Tablero, Apariciones)
 _tuplasFinales:: Tablero -> [(Integer,Integer)]
 _tuplasFinales tab = _cantApar (_valoresTableroRepetidos tab) (_eliminarRepetidos (_valoresTableroRepetidos tab))
+
+-- Calcula la tupla con mas repeticiones. Devuelve esta tupla
+_maximoTupla:: [(Integer,Integer)] -> (Integer,Integer)
+_maximoTupla l | length l == 1 = head l
+               | length l > 1 && snd (head l) >= snd (_maximoTupla (tail l)) = head l
+               | otherwise = _maximoTupla (tail l)
+
+-- Agarra la tupla de la funcion anterior y extrae el primer valor
+masRepetido:: Tablero -> Integer
+masRepetido tab = fst (_maximoTupla (_tuplasFinales tab))
 
 -- CaminoFibonacci, verifica si un camino en un tablero cumple con la condicion de que
 -- si un numero (del camino) es suma de los 2 anteriores
