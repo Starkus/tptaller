@@ -21,5 +21,7 @@ empate devuelve cualquiera de ellos.
 - numerosDeCamino  (X)
 - caminoSinRepetidos  (X)
 - caminoDeFibonacci  (X)
-- mayorSecuenciaDeFibonacci  ()
-- secuenciasDeFibonacciDeLongitudK  ()
+- mayorSecuenciaDeFibonacci  (X)
+- secuenciasDeFibonacciDeLongitudK  (X)
+
+Todas las funciones cumplen con los test previstos
