@@ -192,11 +192,12 @@ mayorSecuenciaDeFibonacci :: Tablero -> [Integer]
 mayorSecuenciaDeFibonacci t = numerosDeCamino t (mayorLista (caminosFib t (1,1)))
 
 -- Dado una lista de listas y un nro n, devuelve una lista de listas de longitud n. Las listas de mayor longitud a n se les quita los ultimos elementos asi tienen longitud n
-filtrarListasLongitud :: [[a]] -> Int -> [[a]]                 --(Int porque lenght devuelve valores de tipo Int)
+filtrarListasLongitud :: [[a]] -> Integer -> [[a]]                 --(Int porque lenght devuelve valores de tipo Int)
 filtrarListasLongitud [] _ = []
-filtrarListasLongitud (l:ls) n | length l == n = l : filtrarListasLongitud ls n
-                               | length l > n = (quitarUltimos l ((length l) - n)) : filtrarListasLongitud ls n
+filtrarListasLongitud (l:ls) n | length l == val = l : filtrarListasLongitud ls n
+                               | length l > val = (quitarUltimos l ((length l) - val)) : filtrarListasLongitud ls n
                                | otherwise = filtrarListasLongitud ls n
+                                where val = fromIntegral n
 
 -- Dada una lista y un nro n, devuelve una lista sin los ultimos n elementos
 quitarUltimos :: [a] -> Int -> [a]
@@ -219,5 +220,5 @@ valoresDeCaminos t [] = []
 valoresDeCaminos t (c:cs) = numerosDeCamino t c : valoresDeCaminos t cs
 
 -- Tambien
-secuenciasDeFibonacciDeLongitudK :: Tablero -> Int -> Conjunto [Integer]
+secuenciasDeFibonacciDeLongitudK :: Tablero -> Integer -> Conjunto [Integer]
 secuenciasDeFibonacciDeLongitudK t k = conjuntoDeListas (valoresDeCaminos t (filtrarListasLongitud (caminosFib t (1,1)) k))
